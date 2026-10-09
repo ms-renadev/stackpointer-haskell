@@ -1,0 +1,60 @@
++----------------------------------+
+               |           START: main()          |
+               | Initialize: SP = 2000, Memory = {}|
+               | Disks = [DiskA, DiskB, DiskC]    |
+               +----------------------------------+
+                                |
+                                v
+               +----------------------------------+
+               |  CALL: hanoiSim(disks, S, T, A)  |
+               +----------------------------------+
+                                |
+                                v
+                   /------------------------\
+                  /  Are disks empty ([])?   \
+                 /----------------------------\
+                |                              |
+               YES                             NO
+                |                              |
+                v                              v
+      +--------------------+       /------------------------\
+      | Return: ([], State)|      /   Is disks == [DiskA]?   \
+      +--------------------+     /     (Base Case Check)      \
+                                 \----------------------------/
+                                  |                          |
+                                 YES                         NO
+                                  |                          |
+                                  v                          v
+      +----------------------------------+  +-----------------------------------+
+      |         EXECUTE BASE CASE        |  |       EXECUTE RECURSIVE STEP      |
+      | 1. Create Frame for DiskA        |  | 1. Split disks:                   |
+      | 2. Insert Frame at current SP    |  |    topDisks = [A, B]              |
+      | 3. SP = currentSP - 1            |  |    bottomDisk = C                 |
+      | 4. Record Move:                  |  | 2. Create Frame for bottomDisk    |
+      |    "Move DiskA from src to target"| | 3. Insert Frame at current SP     |
+      +----------------------------------+  | 4. Update SP = currentSP - 1      |
+                      |                     +-----------------------------------+
+                      |                                       |
+                      v                                       v
+            +-------------------+           +-----------------------------------+
+            | RETURN:           |           |  RECURSION 1: Top disks to Aux    |
+            | ([Move], State)   |           |  hanoiSim(topDisks, src, aux, tgt)|
+            +-------------------+           +-----------------------------------+
+                                                              |
+                                                              v
+                                            +-----------------------------------+
+                                            |  MAIN MOVE: Bottom disk to Target |
+                                            |  Record: "Move bottomDisk..."     |
+                                            +-----------------------------------+
+                                                              |
+                                                              v
+                                            +-----------------------------------+
+                                            |  RECURSION 2: Top disks to Target |
+                                            |  hanoiSim(topDisks, aux, tgt, src)|
+                                            +-----------------------------------+
+                                                              |
+                                                              v
+                                            +-----------------------------------+
+                                            | COMBINE & RETURN:                 |
+                                            | (Moves1 + MainMove + Moves2, State)|
+                                            +-----------------------------------+
